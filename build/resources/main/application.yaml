@@ -1,0 +1,18 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:mydb
+    username: user
+    password: password
+    driverClassName: org.h2.Driver
+  jpa:
+    spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
+
+# Swagger
+springdoc:
+  api-docs:
+    path: /documentation/api-docs
+
+# com.Application specific
+app:
+  note:
+    default-expiration-time-in-mins: 10
