@@ -1,18 +1,13 @@
 package com.interfaces.config;
 
-import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.info.Info;
-import org.springframework.context.annotation.Bean;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
+import org.springframework.context.annotation.Configuration;
 
-public class SwaggerConfig {
-
-    @Bean
-    OpenAPI openAPI() {
-        return new OpenAPI()
-                .info(
-                        new Info()
-                                .title("Notes Viewer Service")
-                                .description("REST API documentation")
-                );
-    }
-}
+@SecurityScheme(name = "api-auth", scheme = "basic", type = SecuritySchemeType.HTTP, in = SecuritySchemeIn.HEADER)
+@OpenAPIDefinition(info = @Info(title = "Notes Viewer Service", version = "1.0", description = "REST API documentation"))
+@Configuration
+public class SwaggerConfig {}

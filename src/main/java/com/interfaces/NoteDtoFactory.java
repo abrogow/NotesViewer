@@ -9,6 +9,6 @@ import org.springframework.stereotype.Component;
 public class NoteDtoFactory {
 
     public NoteDto create(Note note) {
-        return new NoteDto(note.getContent());
+        return new NoteDto(note.getId(), note.getContent());
     }
 }

@@ -1,52 +1,37 @@
-//package com.interfaces.config;
-//
-//import org.springframework.context.annotation.Configuration;
-//import org.springframework.http.HttpMethod;
-//import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-//import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-//import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-//
-//@Configuration
-//@EnableWebSecurity
-//public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-//
-//    @Override
-//    protected void configure(HttpSecurity http) throws Exception {
-//        http.authorizeRequests()
-//                .antMatchers("/notes").permitAll()
-//                .antMatchers(HttpMethod.POST, HttpMethod.PUT, "/notes")
-//                .anyRequest().authenticated()
-//                .and()
-//                .formLogin()
-//                .loginPage("/login")
-//                .permitAll()
-//                .and()
-//                .logout()
-//                .permitAll();
-//    }
-//
-//    private void addViewerPermission(HttpSecurity http) throws Exception {
-//        http.authorizeRequests()
-//                .antMatchers(HttpMethod.POST, HttpMethod.PUT, "/notes")
-//                .anyRequest().authenticated()
-//                .and()
-//                .formLogin()
-//                .permitAll()
-//                .and()
-//                .logout()
-//                .permitAll();
-//    }
-//
-//    @Bean
-//    @Override
-//    public UserDetailsService userDetailsService() {
-//        UserDetails user =
-//                User.withDefaultPasswordEncoder()
-//                        .username("user")
-//                        .password("password")
-//                        .roles("USER")
-//                        .build();
-//
-//        return new InMemoryUserDetailsManager(user);
-//    }
-//}
+package com.interfaces.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+@Configuration
+@EnableWebSecurity
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.authorizeRequests()
+                .antMatchers("/swagger-ui/**", "/documentation/api-docs/**").permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .httpBasic();
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.inMemoryAuthentication()
+                .withUser("user")
+                .password(passwordEncoder().encode("password"))
+                .authorities("ADMIN");
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+}

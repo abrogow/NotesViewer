@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import com.domain.NoteNotFoundException;
 import com.domain.ExpirationTimeExceededException;
-import com.domain.NotAuthorizedException;
 
 @Slf4j
 @ControllerAdvice
@@ -29,12 +28,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handle(ExpirationTimeExceededException exception) {
         log.error("Handling exception. Error {}", ExpirationTimeExceededException.ERROR_MESSAGE, exception);
         return new ResponseEntity<>(new ErrorDto(ExpirationTimeExceededException.ERROR_MESSAGE), HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler(NotAuthorizedException.class)
-    public ResponseEntity<Object> handle(NotAuthorizedException exception) {
-        log.error("Handling exception. Error {}", NotAuthorizedException.ERROR_MESSAGE, exception);
-        return new ResponseEntity<>(new ErrorDto(NotAuthorizedException.ERROR_MESSAGE), HttpStatus.FORBIDDEN);
     }
 
     @RequiredArgsConstructor

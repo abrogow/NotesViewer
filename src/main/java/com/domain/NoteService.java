@@ -1,5 +1,6 @@
 package com.domain;
 
+import com.shared.TimeProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -14,14 +15,13 @@ public class NoteService {
 
     private final NoteRepository noteRepository;
     private final DefaultNoteExpirationTimeProvider defaultNoteExpirationTimeProvider;
+    private final TimeProvider timeProvider;
 
-    public void addNote(String content, Integer lifeLengthInMin) {
+    public Note addNote(String content, Integer lifeLengthInMin) {
         log.info("Start creating new note");
 
         Note note = new Note(content, getExpirationTime(lifeLengthInMin));
-        noteRepository.save(note);
-
-        log.info("Finished saving note");
+        return noteRepository.save(note);
     }
 
     public void updateNoteLifetime(Long noteId, Integer lifeLengthInMin) {
@@ -31,6 +31,7 @@ public class NoteService {
                 .orElseThrow(NoteNotFoundException::new);
         Instant expirationTime = getExpirationTime(lifeLengthInMin);
         note.setExpirationTime(expirationTime);
+        noteRepository.save(note);
 
         log.info("Finished updating expiration time for note with id {}", noteId);
     }
@@ -51,7 +52,7 @@ public class NoteService {
     }
 
     private Instant getExpirationTime(Integer lifeLengthInMin) {
-        Instant now = Instant.now();
+        Instant now = timeProvider.now();
 
         return lifeLengthInMin != null
                 ? now.plus(lifeLengthInMin, ChronoUnit.MINUTES)
@@ -59,7 +60,7 @@ public class NoteService {
     }
 
     private Instant getDefaultExpirationTime() {
-        Instant now = Instant.now();
+        Instant now = timeProvider.now();
         Integer defaultExpirationTime = defaultNoteExpirationTimeProvider.getDefaultExpirationTime();
 
         return defaultExpirationTime != null
@@ -68,7 +69,7 @@ public class NoteService {
     }
 
     private boolean noteValid(Note note) {
-        Instant now = Instant.now();
-        return note.getExpirationTime().isBefore(now);
+        Instant now = timeProvider.now();
+        return now.isBefore(note.getExpirationTime());
     }
 }
