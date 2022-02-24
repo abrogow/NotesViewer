@@ -1,6 +1,6 @@
 
 ##Execution and Setup
-You can use gradle wrapper to build project and run tests
+>You can use gradle wrapper to build project and run tests
 ```
 $ ./gradlew clean build
 $ ./gradlew test
