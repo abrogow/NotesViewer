@@ -20,6 +20,6 @@ public class NoteForm implements NoteProvider {
     private final String content;
 
     @Nullable
-    @Min(value = 0, message = "The value must be positive")
+    @Min(value = 1, message = "The value must be positive and min 1")
     private Integer lifeLengthInMin;
 }

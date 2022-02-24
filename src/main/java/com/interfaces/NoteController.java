@@ -31,7 +31,8 @@ public class NoteController {
     private final NoteService service;
     private final NoteDtoFactory factory;
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
     @Operation(
             summary = "Create new note",
             responses = {
@@ -53,7 +54,7 @@ public class NoteController {
     )
     @ResponseStatus(code = HttpStatus.OK)
     public void updateNoteLifetime(@RequestParam Long noteId,
-                                   @RequestParam @Min(value = 0, message = "The value must be positive") Integer lifeLengthInMin) {
+                                   @RequestParam @Min(value = 1, message = "The value must be positive and min 1") Integer lifeLengthInMin) {
         service.updateNoteLifetime(noteId, lifeLengthInMin);
     }
 

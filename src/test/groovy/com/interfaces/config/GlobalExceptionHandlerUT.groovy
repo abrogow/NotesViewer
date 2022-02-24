@@ -20,8 +20,8 @@ class GlobalExceptionHandlerUT extends Specification {
 
     def 'Should return 404 NOT_FOUND in case of ExpirationTimeExceededException'() {
         when:
-        def call = exceptionHandler.handle(new ExpirationTimeExceededException())
+            def call = exceptionHandler.handle(new ExpirationTimeExceededException())
         then:
-        call.statusCode == HttpStatus.NOT_FOUND
+            call.statusCode == HttpStatus.NOT_FOUND
     }
 }
