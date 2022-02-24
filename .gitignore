@@ -1,0 +1,17 @@
+#Intelij IDEA
+.idea
+*.iws
+*.iml
+*.ipr
+/out/
+
+#Gradle
+.gradle
+**/build/
+!gradle.wrapper.jar
+
+#Java
+*.class
+
+*.log
+.cache
