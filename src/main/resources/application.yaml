@@ -12,7 +12,7 @@ springdoc:
   api-docs:
     path: /documentation/api-docs
 
-# com.Application specific
+# Application specific
 app:
   note:
     default-expiration-time-in-mins: 10
